@@ -1,0 +1,167 @@
+generator client {
+    provider = "prisma-client"
+    output   = "../src/generated"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+enum UserRole {
+    CUSTOMER
+    OWNER
+    ADMIN
+}
+
+enum SuggestionStatus {
+    OPEN
+    CLAIMED
+    APPROVED
+    REJECTED
+}
+
+model User {
+    id             String   @id @default(cuid())
+    authProviderId String   @unique
+    email          String   @unique
+    displayName    String?
+    role           UserRole @default(CUSTOMER)
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+
+    itemReviews      ItemReview[]
+    comboReviews     ComboReview[]
+    combos           Combo[]
+    suggestionVotes  SuggestionVote[]
+    ownedRestaurants Restaurant[]     @relation("RestaurantOwner")
+}
+
+model Restaurant {
+    id          String   @id @default(cuid())
+    slug        String   @unique
+    name        String
+    description String?
+    address     String?
+    city        String?
+    state       String?
+    websiteUrl  String?
+    claimed     Boolean  @default(false)
+    ownerUserId String?
+    owner       User?    @relation("RestaurantOwner", fields: [ownerUserId], references: [id])
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    menuItems   MenuItem[]
+    combos      Combo[]
+    suggestions RestaurantSuggestion[]
+
+    @@index([claimed])
+    @@index([ownerUserId])
+    @@index([city, state])
+}
+
+model MenuItem {
+    id           String     @id @default(cuid())
+    restaurantId String
+    restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+    name         String
+    description  String?
+    priceCents   Int?
+    active       Boolean    @default(true)
+    createdAt    DateTime   @default(now())
+    updatedAt    DateTime   @updatedAt
+
+    comboItems  ComboItem[]
+    itemReviews ItemReview[]
+
+    @@unique([restaurantId, name])
+    @@index([restaurantId, active])
+}
+
+model Combo {
+    id              String     @id @default(cuid())
+    restaurantId    String
+    restaurant      Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+    createdByUserId String
+    createdByUser   User       @relation(fields: [createdByUserId], references: [id])
+    name            String
+    description     String?
+    createdAt       DateTime   @default(now())
+    updatedAt       DateTime   @updatedAt
+
+    comboItems   ComboItem[]
+    comboReviews ComboReview[]
+
+    @@index([restaurantId, createdAt])
+}
+
+model ComboItem {
+    comboId    String
+    menuItemId String
+    combo      Combo    @relation(fields: [comboId], references: [id], onDelete: Cascade)
+    menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+
+    @@id([comboId, menuItemId])
+    @@index([menuItemId])
+}
+
+model ItemReview {
+    id         String   @id @default(cuid())
+    userId     String
+    menuItemId String
+    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+    rating     Decimal  @db.Decimal(2, 1)
+    caption    String?  @db.VarChar(280)
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    @@index([menuItemId, createdAt])
+    @@index([userId, createdAt])
+}
+
+model ComboReview {
+    id        String   @id @default(cuid())
+    userId    String
+    comboId   String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    combo     Combo    @relation(fields: [comboId], references: [id], onDelete: Cascade)
+    rating    Decimal  @db.Decimal(2, 1)
+    caption   String?  @db.VarChar(280)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([comboId, createdAt])
+    @@index([userId, createdAt])
+}
+
+model RestaurantSuggestion {
+    id                  String           @id @default(cuid())
+    name                String
+    city                String?
+    state               String?
+    websiteUrl          String?
+    status              SuggestionStatus @default(OPEN)
+    claimedRestaurantId String?
+    createdAt           DateTime         @default(now())
+    updatedAt           DateTime         @updatedAt
+
+    votes        SuggestionVote[]
+    restaurant   Restaurant?      @relation(fields: [restaurantId], references: [id])
+    restaurantId String?
+
+    @@index([status, createdAt])
+    @@index([name])
+}
+
+model SuggestionVote {
+    suggestionId String
+    userId       String
+    createdAt    DateTime @default(now())
+
+    suggestion RestaurantSuggestion @relation(fields: [suggestionId], references: [id], onDelete: Cascade)
+    user       User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@id([suggestionId, userId])
+    @@index([userId])
+}

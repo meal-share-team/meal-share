@@ -1,4 +1,5 @@
-# Logs
+server/src/generated
+server/prisma/migrations
 logs
 *.log
 npm-debug.log*
@@ -6,15 +7,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
 node_modules
 dist
+.env.local
 .env
 .DS_Store
 dist-ssr
 *.local
-
-# Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
