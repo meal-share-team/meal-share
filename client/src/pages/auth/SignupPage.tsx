@@ -1,6 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 
+// Page for creating an account with meal share for both restaurants and customers
+// Can navigate to Landing , suggestions, and login pages
+
 function SignupPage() {
     const navigate = useNavigate();
 

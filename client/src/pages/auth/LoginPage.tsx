@@ -1,6 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 
+// Page for existing users to login to their accounts
+// Can navigate to langing, suggestions, and signup pages
+
 function LoginPage() {
     const navigate = useNavigate();
 

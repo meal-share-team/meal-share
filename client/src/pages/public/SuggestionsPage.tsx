@@ -1,3 +1,6 @@
+// Suggestions page for people to sugest new restaurants that should be added to the website
+// Can navigate to landing page, login, and sign up pages
+
 function SuggestionsPage() {
     return (
         <section>
