@@ -18,7 +18,7 @@ router.get("/dashboard", async (req: any, res: any) => {
             _count: { select: { menuItems: true, combos: true } },
         }
     });
-    res.join(restaurants);
+    res.json(restaurants);
 });
 
 router.post("/restaurants/:restaurantId/menu-items", async (req: any, res: any) => {
