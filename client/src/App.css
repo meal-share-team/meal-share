@@ -182,3 +182,29 @@
         border-right-color: var(--border);
     }
 }
+
+:root {
+    --primary: #2563eb;
+    --background: #f8fafc;
+    --text: #1e293b;
+  }
+  
+  body {
+    font-family: 'Inter', system-ui, sans-serif; /* Modern, clean font */
+    background-color: var(--background);
+    color: var(--text);
+    margin: 0;
+  }
+  
+  button {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: transform 0.1s ease;
+  }
+  
+  button:active {
+    transform: scale(0.95); /* Adds a "pressed" feel */
+  }
