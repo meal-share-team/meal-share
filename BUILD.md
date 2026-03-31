@@ -22,7 +22,7 @@ docker run --name meal-share-postgres \
 -e POSTGRES_USER=postgres \
 -e POSTGRES_PASSWORD=postgres \
 -e POSTGRES_DB=meal_share \
--p 5432:5433 \
+-p 5433:5432 \
 -d postgres:16
 ```
 
