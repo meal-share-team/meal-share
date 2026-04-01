@@ -4,66 +4,8 @@ import { supabase } from "../../lib/supabase";
 // Page for creating an account with meal share for both restaurants and customers
 // Can navigate to Landing , suggestions, and login pages
 
-function SignupPage() {
+export default function SignupPage() {
     const navigate = useNavigate();
-
-    // Styling Objects (Matching Landing, Login, and Suggestions)
-    const pageStyle: React.CSSProperties = {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '85vh',
-        padding: '40px 20px',
-        fontFamily: "'Inter', sans-serif",
-        backgroundColor: '#f8fafc',
-    };
-
-    const cardStyle: React.CSSProperties = {
-        backgroundColor: 'white',
-        padding: '40px',
-        borderRadius: '16px',
-        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)',
-        width: '100%',
-        maxWidth: '400px',
-        textAlign: 'center',
-    };
-
-    const inputStyle: React.CSSProperties = {
-        width: '100%',
-        padding: '12px',
-        marginBottom: '15px',
-        borderRadius: '8px',
-        border: '1px solid #e2e8f0',
-        fontSize: '1rem',
-        boxSizing: 'border-box',
-        fontFamily: "'Inter', sans-serif",
-    };
-
-    const selectStyle: React.CSSProperties = {
-        ...inputStyle,
-        appearance: 'none', // Removes default browser arrow
-        backgroundColor: '#ffffff',
-        cursor: 'pointer',
-        backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'right 12px center',
-        backgroundSize: '16px',
-    };
-
-    const buttonStyle: React.CSSProperties = {
-        width: '100%',
-        padding: '12px',
-        backgroundColor: '#2563eb',
-        color: 'white',
-        border: 'none',
-        borderRadius: '8px',
-        fontWeight: '600',
-        fontSize: '1rem',
-        cursor: 'pointer',
-        transition: 'background-color 0.2s',
-        marginTop: '10px',
-    };
 
     const handleSignup = async (formData: FormData) => {
         const email = String(formData.get("email") ?? "");
@@ -83,53 +25,95 @@ function SignupPage() {
             return;
         }
 
-        alert("Check your email for the confirmation link!");
+        alert("Check your email for a confirmation link!");
         navigate("/login");
     };
 
     return (
-        <section style={pageStyle}>
-            <div style={cardStyle}>
-                <h1 style={{ color: '#1a202c', marginBottom: '10px', fontSize: '2rem', letterSpacing: '-0.02em' }}>
-                    Create Account
-                </h1>
-                <p style={{ color: '#4a5568', marginBottom: '30px' }}>
-                    Join Meal Share to start exploring menus.
-                </p>
+        <div className="min-h-[90vh] bg-white font-sans antialiased text-slate-900 flex items-center justify-center px-8 py-12">
+            <div className="max-w-md w-full space-y-10">
+                
+                {/* Header Section */}
+                <div className="text-center space-y-4">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-black rounded-2xl shadow-xl shadow-black/20 mb-4 transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                        <span className="text-white font-black text-3xl">M</span>
+                    </div>
+                    <h2 className="text-5xl font-black tracking-tighter text-black leading-tight">
+                        Start <br />
+                        <span className="text-orange-500 italic">Sharing.</span>
+                    </h2>
+                    <p className="text-slate-500 font-medium max-w-[280px] mx-auto">
+                        Join the community and help others discover the best meals.
+                    </p>
+                </div>
 
+                {/* Signup Form */}
                 <form
+                    className="space-y-6"
                     onSubmit={(e) => {
                         e.preventDefault();
                         void handleSignup(new FormData(e.currentTarget));
                     }}
                 >
-                    <input name="email" type="email" placeholder="Email" required style={inputStyle} />
-                    <input name="password" type="password" placeholder="Password" required style={inputStyle} />
-                    
-                    <div style={{ textAlign: 'left', marginBottom: '5px', fontSize: '0.85rem', fontWeight: '600', color: '#64748b' }}>
-                        I am a...
+                    <div className="space-y-4">
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Email Address</label>
+                            <input 
+                                name="email" 
+                                type="email" 
+                                placeholder="name@example.com" 
+                                required 
+                                className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-black focus:bg-white rounded-2xl outline-none transition-all font-bold text-lg"
+                            />
+                        </div>
+
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Create Password</label>
+                            <input 
+                                name="password" 
+                                type="password" 
+                                placeholder="••••••••" 
+                                required 
+                                className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-black focus:bg-white rounded-2xl outline-none transition-all font-bold text-lg"
+                            />
+                        </div>
+
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">I am a...</label>
+                            <div className="relative">
+                                <select 
+                                    name="role" 
+                                    defaultValue="CUSTOMER"
+                                    className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-black focus:bg-white rounded-2xl outline-none transition-all font-bold text-lg appearance-none cursor-pointer"
+                                >
+                                    <option value="CUSTOMER">Customer / Foodie</option>
+                                    <option value="OWNER">Restaurant Owner</option>
+                                </select>
+                                <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                                    ▼
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <select name="role" title="role" defaultValue="CUSTOMER" style={selectStyle}>
-                        <option value="CUSTOMER">Customer</option>
-                        <option value="OWNER">Restaurant Owner</option>
-                    </select>
 
                     <button 
                         type="submit" 
-                        style={buttonStyle}
-                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'}
-                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+                        className="w-full bg-black text-white px-8 py-5 rounded-2xl text-lg font-extrabold hover:bg-slate-800 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-black/20"
                     >
                         Create Account
                     </button>
                 </form>
 
-                <p style={{ marginTop: '25px', color: '#64748b', fontSize: '0.9rem' }}>
-                    Already have an account? <Link to="/login" style={{ color: '#2563eb', textDecoration: 'none', fontWeight: '600' }}>Login</Link>
-                </p>
+                {/* Footer Link */}
+                <div className="pt-6 border-t border-slate-100">
+                    <p className="text-center text-slate-400 font-bold text-sm">
+                        Already have an account?{' '}
+                        <Link to="/login" className="text-black hover:text-orange-500 transition-colors border-b-2 border-orange-500/20 hover:border-orange-500">
+                            Sign in instead
+                        </Link>
+                    </p>
+                </div>
             </div>
-        </section>
+        </div>
     );
 }
-
-export default SignupPage;

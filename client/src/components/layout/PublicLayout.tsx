@@ -2,91 +2,59 @@ import React from "react";
 import { Link, Outlet } from "react-router-dom";
 
 function PublicLayout() {
-    // Shared styling for Nav Buttons
-    const navButtonStyle: React.CSSProperties = {
-        padding: '8px 16px',
-        fontSize: '0.9rem',
-        fontWeight: '600',
-        borderRadius: '8px',
-        cursor: 'pointer',
-        transition: 'all 0.2s ease',
-        border: 'none',
-        fontFamily: "'Inter', sans-serif",
-    };
-
-    const loginButtonStyle: React.CSSProperties = {
-        ...navButtonStyle,
-        backgroundColor: '#2563eb', // Primary Blue
-        color: 'white',
-        boxShadow: '0 4px 6px -1px rgba(37, 99, 235, 0.2)',
-    };
-
-    const ghostButtonStyle: React.CSSProperties = {
-        ...navButtonStyle,
-        backgroundColor: 'transparent',
-        color: '#4a5568', // Slate gray
-    };
-
     return (
-        <div style={{ fontFamily: "'Inter', sans-serif", backgroundColor: '#f8fafc', minHeight: '100vh' }}>
-            <nav style={{ 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center', 
-                padding: '16px 40px',
-                backgroundColor: 'white',
-                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', // Subtle bottom border shadow
-                position: 'sticky',
-                top: 0,
-                zIndex: 1000
-            }}>
-                {/* Logo Section */}
-                <Link to="/" style={{ 
-                    fontWeight: '800', 
-                    textDecoration: 'none', 
-                    fontSize: '1.4rem', 
-                    color: '#1a202c',
-                    letterSpacing: '-0.02em'
-                }}>
-                    Meal<span style={{ color: '#2563eb' }}>Share</span>
-                </Link>
-    
-                {/* Navigation Links */}
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <Link to="/suggestions" style={{ textDecoration: 'none' }}>
-                        <button 
-                            style={ghostButtonStyle}
-                            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f1f5f9'}
-                            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+        <div className="min-h-screen bg-white font-sans antialiased text-slate-900">
+            {/* Glassmorphism Navigation Bar */}
+            <nav className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-xl border-b border-slate-100">
+                <div className="flex items-center justify-between px-8 py-5 max-w-7xl mx-auto">
+                    
+                    {/* Logo Section */}
+                    <Link to="/" className="flex items-center gap-2 group transition-transform hover:scale-[1.02]">
+                        <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg shadow-black/20">
+                            <span className="text-white font-black text-xl">M</span>
+                        </div>
+                        <h1 className="text-2xl font-bold tracking-tighter text-black">
+                            Meal <span className="text-orange-500">Share</span>
+                        </h1>
+                    </Link>
+            
+                    {/* Navigation Links */}
+                    <div className="flex items-center gap-6 md:gap-10">
+                        <Link 
+                            to="/suggestions" 
+                            className="text-sm font-bold text-slate-500 hover:text-orange-500 transition-colors hidden sm:block uppercase tracking-widest"
                         >
                             Suggestions
-                        </button>
-                    </Link>
-                    <Link to="/signup" style={{ textDecoration: 'none' }}>
-                        <button 
-                            style={ghostButtonStyle}
-                            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f1f5f9'}
-                            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                        </Link>
+                        
+                        <Link 
+                            to="/login" 
+                            className="text-sm font-bold text-slate-900 hover:opacity-70 transition-opacity uppercase tracking-widest"
                         >
-                            Sign Up
-                        </button>
-                    </Link>
-                    <Link to="/login" style={{ textDecoration: 'none' }}>
-                        <button 
-                            style={loginButtonStyle}
-                            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'}
-                            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+                            Sign In
+                        </Link>
+                        
+                        <Link 
+                            to="/signup" 
+                            className="bg-black !text-white px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-slate-800 hover:scale-[1.05] active:scale-[0.95] transition-all shadow-md shadow-black/10"
                         >
-                            Login
-                        </button>
-                    </Link>
+                            Get Started
+                        </Link>
+                    </div>
                 </div>
             </nav>
 
+            {/* Content Area */}
             <main>
-                {/* The content of your pages (Landing, Login, etc.) appears here */}
                 <Outlet />
             </main>
+
+            {/* Minimal Global Footer */}
+            <footer className="max-w-7xl mx-auto px-8 py-10 border-t border-slate-50 text-center">
+                <p className="text-[10px] text-slate-300 font-black uppercase tracking-[0.2em]">
+                    Powered by the community • 2026
+                </p>
+            </footer>
         </div>
     );
 }
