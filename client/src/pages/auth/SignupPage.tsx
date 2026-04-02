@@ -1,22 +1,32 @@
-import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "../../lib/supabase";
-
 // Page for creating an account with meal share for both restaurants and customers
 // Can navigate to Landing , suggestions, and login pages
 
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "../../lib/supabase";
+
 export default function SignupPage() {
     const navigate = useNavigate();
+    // Track role to change the name prompt dynamically
+    const [role, setRole] = useState("CUSTOMER");
 
-    const handleSignup = async (formData: FormData) => {
+    const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        
         const email = String(formData.get("email") ?? "");
         const password = String(formData.get("password") ?? "");
         const role = String(formData.get("role") ?? "CUSTOMER");
+        const displayName = String(formData.get("displayName") ?? "");
 
         const { error } = await supabase.auth.signUp({
             email,
             password,
             options: {
-                data: { role }
+                data: { 
+                    role,
+                    display_name: displayName // Stores the name in metadata
+                }
             }
         });
 
@@ -48,13 +58,7 @@ export default function SignupPage() {
                 </div>
 
                 {/* Signup Form */}
-                <form
-                    className="space-y-6"
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        void handleSignup(new FormData(e.currentTarget));
-                    }}
-                >
+                <form className="space-y-6" onSubmit={handleSignup}>
                     <div className="space-y-4">
                         <div className="space-y-1">
                             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Email Address</label>
@@ -83,7 +87,8 @@ export default function SignupPage() {
                             <div className="relative">
                                 <select 
                                     name="role" 
-                                    defaultValue="CUSTOMER"
+                                    value={role}
+                                    onChange={(e) => setRole(e.target.value)}
                                     className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-black focus:bg-white rounded-2xl outline-none transition-all font-bold text-lg appearance-none cursor-pointer"
                                 >
                                     <option value="CUSTOMER">Customer / Foodie</option>
@@ -93,6 +98,20 @@ export default function SignupPage() {
                                     ▼
                                 </div>
                             </div>
+                        </div>
+
+                        {/* NEW: Dynamic Name Field */}
+                        <div className="space-y-1 animate-in fade-in slide-in-from-top-2 duration-500">
+                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-500 ml-1">
+                                {role === "OWNER" ? "Restaurant Name" : "Your Full Name"}
+                            </label>
+                            <input 
+                                name="displayName" 
+                                type="text" 
+                                placeholder={role === "OWNER" ? "The Burger Joint" : "Ethan Bates"} 
+                                required 
+                                className="w-full px-6 py-4 bg-slate-50 border-2 border-orange-100 focus:border-black focus:bg-white rounded-2xl outline-none transition-all font-bold text-lg"
+                            />
                         </div>
                     </div>
 
