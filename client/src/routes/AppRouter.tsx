@@ -14,13 +14,12 @@ import CustomerHomePage from "../pages/customer/CustomerHomePage";
 import RestaurantsPage from "../pages/customer/RestaurantsPage";
 import OwnerDashboardPage from "../pages/owner/OwnerDashboardPage";
 import OwnerMenuItemsPage from "../pages/owner/OwnerMenuItemsPage";
-
-// 1. Import the Admin Dashboard
 import AdminDashboard from "../pages/AdminDashboard";
 
 function AppRouter() {
   return (
     <Routes>
+      {/* PUBLIC ROUTES */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/suggestions" element={<SuggestionsPage />} />
@@ -28,11 +27,14 @@ function AppRouter() {
         <Route path="/signup" element={<SignupPage />} />
       </Route>
 
-      {/* --- DEV / ADMIN TESTING ROUTE --- */}
-      {/* Placed OUTSIDE ProtectedRoute so you bypass the login screen entirely */}
+      {/* DEV ADMIN */}
       <Route path="/admin" element={<AdminDashboard />} />
 
+      {/* PROTECTED ROUTES */}
       <Route element={<ProtectedRoute />}>
+        
+        {/* CUSTOMER SECTION */}
+        {/* We wrap the Layout inside the RoleRoute to ensure authorization happens first */}
         <Route
           element={
             <RoleRoute allowedRoles={["CUSTOMER"]}>
@@ -40,10 +42,12 @@ function AppRouter() {
             </RoleRoute>
           }
         >
+          {/* These will now correctly inject into the <Outlet /> of CustomerLayout */}
           <Route path="/app" element={<CustomerHomePage />} />
           <Route path="/app/restaurants" element={<RestaurantsPage />} />
         </Route>
 
+        {/* OWNER SECTION */}
         <Route
           element={
             <RoleRoute allowedRoles={["OWNER", "ADMIN"]}>
@@ -56,7 +60,6 @@ function AppRouter() {
         </Route>
       </Route>
 
-      {/* Catch-all redirect */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
