@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 
@@ -7,7 +8,9 @@ import { supabase } from "../../lib/supabase";
 export default function LoginPage() {
     const navigate = useNavigate();
 
-    const handleEmailLogin = async (formData: FormData) => {
+    const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
         const email = String(formData.get("email") ?? "");
         const password = String(formData.get("password") ?? "");
 

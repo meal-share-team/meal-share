@@ -16,8 +16,17 @@ export default function SignupPage() {
         
         const email = String(formData.get("email") ?? "");
         const password = String(formData.get("password") ?? "");
+        const confirmPassword = String(formData.get("confirmPassword") ?? "");
         const role = String(formData.get("role") ?? "CUSTOMER");
         const displayName = String(formData.get("displayName") ?? "");
+
+        // 1. Check if passwords match before calling Supabase
+        if (password !== confirmPassword) {
+            alert("Passwords do not match. Please try again.");
+            return;
+        }
+
+        setLoading(true);
 
         const { error } = await supabase.auth.signUp({
             email,
@@ -32,6 +41,7 @@ export default function SignupPage() {
 
         if (error) {
             alert(error.message);
+            setLoading(false);
             return;
         }
 
