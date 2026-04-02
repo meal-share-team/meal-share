@@ -15,6 +15,9 @@ import RestaurantsPage from "../pages/customer/RestaurantsPage";
 import OwnerDashboardPage from "../pages/owner/OwnerDashboardPage";
 import OwnerMenuItemsPage from "../pages/owner/OwnerMenuItemsPage";
 
+// 1. Import the Admin Dashboard
+import AdminDashboard from "../pages/AdminDashboard";
+
 function AppRouter() {
   return (
     <Routes>
@@ -24,6 +27,10 @@ function AppRouter() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
       </Route>
+
+      {/* --- DEV / ADMIN TESTING ROUTE --- */}
+      {/* Placed OUTSIDE ProtectedRoute so you bypass the login screen entirely */}
+      <Route path="/admin" element={<AdminDashboard />} />
 
       <Route element={<ProtectedRoute />}>
         <Route
@@ -49,6 +56,7 @@ function AppRouter() {
         </Route>
       </Route>
 
+      {/* Catch-all redirect */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
