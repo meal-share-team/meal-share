@@ -4,7 +4,7 @@ import { Link, Outlet } from "react-router-dom";
 function OwnerLayout() {
   return (
         <div>
-                        <nav className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-xl border-b border-slate-100">
+            <nav className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-xl border-b border-slate-100">
                 <div className="flex items-center justify-between px-8 py-5 max-w-7xl mx-auto">
                     
                     {/* Logo Section */}

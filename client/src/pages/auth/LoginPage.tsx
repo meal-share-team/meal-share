@@ -61,7 +61,7 @@ export default function LoginPage() {
                         className="space-y-4"
                         onSubmit={(e) => {
                             e.preventDefault();
-                            void handleEmailLogin(new FormData(e.currentTarget));
+                            void handleEmailLogin(e);
                         }}
                     >
                         <div className="space-y-1">
