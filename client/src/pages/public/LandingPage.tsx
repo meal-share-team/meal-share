@@ -34,7 +34,7 @@ export default function LandingPage() {
                         <Link to="/signup" className="w-full sm:w-auto bg-black !text-white px-10 py-5 rounded-2xl text-lg font-extrabold hover:bg-slate-800 hover:scale-[1.02] transition-all shadow-xl shadow-black/20 text-center">
                             Join Meal Share
                         </Link>
-                        <Link to="/suggestions" className="w-full sm:w-auto bg-white border-2 border-slate-100 px-10 py-5 rounded-2xl text-lg font-bold hover:bg-slate-50 hover:border-slate-200 transition-all text-center">
+                        <Link to="/signup" className="w-full sm:w-auto bg-white border-2 border-slate-100 px-10 py-5 rounded-2xl text-lg font-bold hover:bg-slate-50 hover:border-slate-200 transition-all text-center">
                             Explore Menu
                         </Link>
                     </div>
