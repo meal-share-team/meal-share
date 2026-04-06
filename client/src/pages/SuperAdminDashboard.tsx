@@ -111,7 +111,7 @@ export default function SuperAdminDashboard() {
                 <div className="space-y-12">
                     <section>
                         <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                            <span>📥</span> Pending Spot Suggestions ({suggestions.length})
+                            Pending Spot Suggestions ({suggestions.length})
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {suggestions.map(sugg => (
@@ -149,7 +149,7 @@ export default function SuperAdminDashboard() {
                     <section>
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-bold flex items-center gap-2">
-                                <span>🏢</span> Active Restaurants
+                                Active Restaurants
                             </h2>
                             <button 
                                 onClick={() => { setPrefillRest({ name: '', neighborhood: '' }); setIsRestModalOpen(true); }}
@@ -204,7 +204,7 @@ export default function SuperAdminDashboard() {
                     {pendingDishes.length > 0 && (
                         <div className="mb-8 bg-orange-50 border border-orange-200 rounded-3xl p-6">
                             <h3 className="text-lg font-bold text-orange-800 mb-4 flex items-center gap-2">
-                                <span>⚠️</span> Customer Dish Suggestions ({pendingDishes.length})
+                                Customer Dish Suggestions ({pendingDishes.length})
                             </h3>
                             <div className="grid gap-4">
                                 {pendingDishes.map(dish => (

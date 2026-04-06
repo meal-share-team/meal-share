@@ -12,14 +12,6 @@ export default function LandingPage() {
         
                 {/* Left Content */}
                 <div className="space-y-10">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 text-orange-600 rounded-full text-xs font-bold uppercase tracking-wider border border-orange-100">
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                        </span>
-                        Community Driven Dining
-                    </div>
-
                     <div className="space-y-4">
                         <h2 className="text-6xl lg:text-8xl font-black tracking-tighter leading-[0.85] text-black">
                             Don't just eat. <br />
@@ -98,7 +90,7 @@ export default function LandingPage() {
         {/* Footer / Trust Section */}
         <footer className="bg-slate-50 py-16 border-t border-slate-100">
             <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-8">
-                <p className="text-slate-400 font-bold text-sm">© 2026 Meal Share. Built for foodies.</p>
+                <p className="text-slate-400 font-bold text-sm">© 2026 Meal Share</p>
                 <div className="flex gap-8">
                     <Link to="/about" className="text-slate-400 hover:text-black font-bold text-sm transition-colors">About</Link>
                     <Link to="/privacy" className="text-slate-400 hover:text-black font-bold text-sm transition-colors">Privacy</Link>

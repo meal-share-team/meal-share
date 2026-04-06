@@ -20,12 +20,12 @@ function PublicLayout() {
             
                     {/* Navigation Links */}
                     <div className="flex items-center gap-6 md:gap-10">
-                        <Link 
+                        {/* <Link 
                             to="/suggestions" 
                             className="text-sm font-bold text-slate-500 hover:text-orange-500 transition-colors hidden sm:block uppercase tracking-widest"
                         >
                             Suggestions
-                        </Link>
+                        </Link> */}
                         
                         <Link 
                             to="/login" 
@@ -50,11 +50,11 @@ function PublicLayout() {
             </main>
 
             {/* Minimal Global Footer */}
-            <footer className="max-w-7xl mx-auto px-8 py-10 border-t border-slate-50 text-center">
+            {/* <footer className="max-w-7xl mx-auto px-8 py-10 border-t border-slate-50 text-center">
                 <p className="text-[10px] text-slate-300 font-black uppercase tracking-[0.2em]">
                     Powered by the community • 2026
                 </p>
-            </footer>
+            </footer> */}
         </div>
     );
 }
