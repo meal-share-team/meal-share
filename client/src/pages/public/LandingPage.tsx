@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from "react-router-dom";
 // Landing page of website where you first arrive to the website and can navigate to
 // sugestions, login, and sign up

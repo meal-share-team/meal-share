@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'; // Added useEffect
-import { useNavigate, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 
 type ViewState = 'discover' | 'saved';
@@ -10,6 +10,24 @@ interface MenuItem {
     price: number;
     description: string;
     restaurant_id: string;
+}
+
+interface MealReview {
+    id: string;
+    rating: number | string;
+    caption?: string | null;
+    comment?: string | null;
+    meal_id?: string | null;
+    menu_item_id?: string | null;
+    item_id?: string | null;
+    dish_name?: string | null;
+    created_at?: string;
+}
+
+interface MealReviewSummary {
+    averageRating: number;
+    reviewCount: number;
+    latestCaption: string | null;
 }
 
 interface Restaurant {
@@ -29,6 +47,7 @@ export default function CustomerHomePage() {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
     const [restaurantMenu, setRestaurantMenu] = useState<MenuItem[]>([]);
+    const [mealReviewMap, setMealReviewMap] = useState<Record<string, MealReviewSummary>>({});
     const [locationError, setLocationError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -40,6 +59,65 @@ export default function CustomerHomePage() {
     useEffect(() => {
         fetchSavedMeals();
     }, []);
+
+    const normalizeText = (value: string | null | undefined) =>
+        value?.trim().toLowerCase() ?? '';
+
+    const buildMealReviewMap = (meals: MenuItem[], reviews: MealReview[]) => {
+        const summaries: Record<string, MealReviewSummary> = {};
+
+        meals.forEach((meal) => {
+            const matchedReviews = reviews.filter((review) => {
+                const reviewMealId = review.meal_id ?? review.menu_item_id ?? review.item_id;
+                return reviewMealId
+                    ? reviewMealId === meal.id
+                    : normalizeText(review.dish_name) === normalizeText(meal.name);
+            });
+
+            if (matchedReviews.length === 0) {
+                return;
+            }
+
+            const ratingTotal = matchedReviews.reduce(
+                (total, review) => total + Number(review.rating ?? 0),
+                0
+            );
+
+            const latestCaption =
+                matchedReviews.find((review) => (review.caption ?? review.comment)?.trim())
+                    ?.caption ??
+                matchedReviews.find((review) => (review.caption ?? review.comment)?.trim())
+                    ?.comment ??
+                null;
+
+            summaries[meal.id] = {
+                averageRating: Number((ratingTotal / matchedReviews.length).toFixed(1)),
+                reviewCount: matchedReviews.length,
+                latestCaption,
+            };
+        });
+
+        return summaries;
+    };
+
+    const fetchMealReviews = async (meals: MenuItem[]) => {
+        if (meals.length === 0) {
+            setMealReviewMap({});
+            return;
+        }
+
+        const { data, error } = await supabase
+            .from('reviews')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error || !data) {
+            setMealReviewMap({});
+            return;
+        }
+
+        setMealReviewMap(buildMealReviewMap(meals, data as MealReview[]));
+    };
 
     const fetchSavedMeals = async () => {
         const { data: { user } } = await supabase.auth.getUser();
@@ -56,8 +134,11 @@ export default function CustomerHomePage() {
 
         if (data && !error) {
             // Flatten the nested join result from Supabase
-            const flattenedMeals = data.map((item: any) => item.menu_items);
+            const flattenedMeals = data
+                .map((item: any) => item.menu_items)
+                .filter(Boolean);
             setSavedMeals(flattenedMeals);
+            await fetchMealReviews(flattenedMeals);
         }
     };
 
@@ -95,7 +176,11 @@ export default function CustomerHomePage() {
             .eq('status', 'Active') 
             .order('created_at', { ascending: false });
 
-        if (!error) setRestaurantMenu(data || []);
+        if (!error) {
+            const meals = data || [];
+            setRestaurantMenu(meals);
+            await fetchMealReviews(meals);
+        }
         setIsLoading(false);
     };
 
@@ -146,6 +231,7 @@ export default function CustomerHomePage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {mealList.map((meal) => {
                             const isSaved = savedMeals.some(m => m.id === meal.id);
+                            const reviewSummary = mealReviewMap[meal.id];
                             return (
                                 <div key={meal.id} className="bg-white rounded-[2.5rem] border border-slate-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 group flex flex-col relative border-b-4 border-b-slate-50 hover:border-b-orange-500">
                                     <div className="relative h-48 bg-slate-50 flex items-center justify-center overflow-hidden">
@@ -158,13 +244,30 @@ export default function CustomerHomePage() {
                                         {isSaved ? '🧡' : '🤍'}
                                     </button>
                                     <div className="p-8 flex-1 flex flex-col justify-between">
-                                        <div>
+                                        <div className="space-y-4">
                                             <h3 className="font-black text-xl tracking-tighter text-black mb-2 leading-tight uppercase group-hover:text-orange-500 transition-colors">{meal.name}</h3>
                                             <p className="text-slate-500 text-sm font-medium line-clamp-2 leading-relaxed">{meal.description || "No description provided."}</p>
+                                            {reviewSummary && (
+                                                <div className="rounded-[1.5rem] bg-orange-50 border border-orange-100 px-4 py-4 space-y-2">
+                                                    <div className="flex items-center justify-between gap-3">
+                                                        <span className="text-sm font-black text-orange-600">
+                                                            {reviewSummary.averageRating.toFixed(1)} ★
+                                                        </span>
+                                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                                                            {reviewSummary.reviewCount} review{reviewSummary.reviewCount === 1 ? '' : 's'}
+                                                        </span>
+                                                    </div>
+                                                    {reviewSummary.latestCaption && (
+                                                        <p className="text-sm font-medium text-slate-600 leading-relaxed line-clamp-3">
+                                                            "{reviewSummary.latestCaption}"
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="mt-6 flex items-center justify-between">
                                             <span className="text-sm font-black px-4 py-2 bg-black text-white rounded-xl shadow-lg shadow-black/20">
-                                                ${Number(meal.price).toFixed(2)}
+                                                ${Number(meal.price ?? 0).toFixed(2)}
                                             </span>
                                             <span className="text-[10px] font-black text-orange-500 uppercase tracking-widest italic">Community Dish</span>
                                         </div>
