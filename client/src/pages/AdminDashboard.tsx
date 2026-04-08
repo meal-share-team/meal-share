@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 // Imports mapped to your subfolders
 import CustomerHomePage from './customer/CustomerHomePage';

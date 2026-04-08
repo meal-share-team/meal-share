@@ -1,7 +1,7 @@
 // Suggestions page for people to sugest new restaurants that should be added to the website
 // Can navigate to landing page, login, and sign up pages
 
-import React, { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 
@@ -9,7 +9,7 @@ export default function SuggestionsPage() {
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const handleSuggest = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSuggest = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
         

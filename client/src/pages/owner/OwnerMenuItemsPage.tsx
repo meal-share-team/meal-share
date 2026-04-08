@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { supabase } from '../../lib/supabase';
 
 interface MenuItem {
@@ -66,7 +66,7 @@ export default function OwnerMenuItemsPage() {
         setLoading(false);
     };
 
-    const handleAddItem = async (e: React.FormEvent) => {
+    const handleAddItem = async (e: FormEvent) => {
         e.preventDefault();
         if (!name || !price || !ownerRestaurantId) return;
         setIsSubmitting(true);

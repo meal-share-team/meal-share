@@ -1,5 +1,4 @@
-// 1. Added React to the import
-import React, { useState } from "react"; 
+import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 
@@ -7,10 +6,9 @@ export default function SignupPage() {
     const navigate = useNavigate();
     const [role, setRole] = useState("CUSTOMER");
     
-    // 2. FIXED: Added the missing loading state
     const [loading, setLoading] = useState(false);
 
-    const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         
@@ -73,7 +71,6 @@ export default function SignupPage() {
                             <input name="password" type="password" placeholder="••••••••" required className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-black focus:bg-white rounded-2xl outline-none transition-all font-bold text-lg" />
                         </div>
 
-                        {/* 3. FIXED: Added the Confirm Password Input */}
                         <div className="space-y-1">
                             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Confirm Password</label>
                             <input name="confirmPassword" type="password" placeholder="••••••••" required className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-black focus:bg-white rounded-2xl outline-none transition-all font-bold text-lg" />
