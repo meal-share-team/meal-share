@@ -1,6 +1,6 @@
 import { supabase } from "./supabase";
 
-export const API_URL = import.meta.env.VITE_API_URL ?? "/api";
+export const API_URL = "/api";
 
 export async function buildAuthHeaders(): Promise<Record<string, string>> {
     const { data } = await supabase.auth.getUser();
@@ -19,5 +19,6 @@ export async function buildAuthHeaders(): Promise<Record<string, string>> {
             user.user_metadata.full_name ??
             ""
         ),
+        "x-user-neighborhood": String(user.user_metadata.neighborhood ?? ""),
     };
 }

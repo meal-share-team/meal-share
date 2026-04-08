@@ -37,7 +37,8 @@ async function parseJsonResponse(response: Response) {
     }
 
     const errorBody = await response.json().catch(() => ({}));
-    throw new Error(errorBody.message ?? "Request failed");
+    const errorMessage = errorBody.message ?? `Request failed with status ${response.status}`;
+    throw new Error(errorMessage);
 }
 
 async function fetchJson(input: RequestInfo | URL, init?: RequestInit) {
@@ -46,7 +47,9 @@ async function fetchJson(input: RequestInfo | URL, init?: RequestInit) {
         return await parseJsonResponse(response);
     } catch (error) {
         if (error instanceof TypeError) {
-            throw new Error("Review service is unreachable. Make sure the API server is running and try again.");
+            console.error("Fetch error details:", error);
+            console.error("Attempted URL:", input);
+            throw new Error(`Review service is unreachable at ${input}. Make sure the API server is running and try again.`);
         }
 
         throw error;

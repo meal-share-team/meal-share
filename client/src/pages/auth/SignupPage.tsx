@@ -17,6 +17,7 @@ export default function SignupPage() {
         const confirmPassword = String(formData.get("confirmPassword") ?? "");
         const roleSelection = String(formData.get("role") ?? "CUSTOMER");
         const displayName = String(formData.get("displayName") ?? "");
+        const neighborhood = String(formData.get("neighborhood") ?? ""); // Grab the new field
 
         if (password !== confirmPassword) {
             alert("Passwords do not match. Please try again.");
@@ -25,19 +26,21 @@ export default function SignupPage() {
 
         setLoading(true);
 
-        const { error } = await supabase.auth.signUp({
+        // 1. Create the Auth Account
+        const { error: authError } = await supabase.auth.signUp({
             email,
             password,
             options: {
                 data: { 
                     role: roleSelection,
-                    display_name: displayName 
+                    display_name: displayName,
+                    neighborhood: neighborhood // Store the neighborhood in metadata
                 }
             }
         });
 
-        if (error) {
-            alert(error.message);
+        if (authError) {
+            alert(authError.message);
             setLoading(false);
             return;
         }
@@ -93,6 +96,16 @@ export default function SignupPage() {
                             </label>
                             <input name="displayName" type="text" placeholder={role === "OWNER" ? "The Burger Joint" : "Ethan Bates"} required className="w-full px-6 py-4 bg-slate-50 border-2 border-orange-100 focus:border-black focus:bg-white rounded-2xl outline-none transition-all font-bold text-lg" />
                         </div>
+
+                        {/* NEW: Neighborhood field that only shows for Owners */}
+                        {role === "OWNER" && (
+                            <div className="space-y-1 animate-in fade-in slide-in-from-top-2 duration-500">
+                                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-500 ml-1">
+                                    Neighborhood / City
+                                </label>
+                                <input name="neighborhood" type="text" placeholder="e.g. Clifton" required className="w-full px-6 py-4 bg-slate-50 border-2 border-orange-100 focus:border-black focus:bg-white rounded-2xl outline-none transition-all font-bold text-lg" />
+                            </div>
+                        )}
                     </div>
 
                     <button 

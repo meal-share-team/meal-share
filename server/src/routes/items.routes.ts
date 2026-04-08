@@ -161,75 +161,83 @@ router.get("/:itemId/reviews", async (req: any, res: any) => {
 });
 
 router.post("/:itemId/reviews", requireAuth, async (req: any, res: any) => {
-    const { itemId } = req.params;
-    const { rating, caption, itemName, restaurantName, description, priceCents } = req.body;
-    const user = req.user;
-    const normalizedCaption = typeof caption === "string" ? caption.trim() : "";
-    const numericRating = Number(rating);
+    try {
+        const { itemId } = req.params;
+        const { rating, caption, itemName, restaurantName, description, priceCents } = req.body;
+        const user = req.user;
+        const normalizedCaption = typeof caption === "string" ? caption.trim() : "";
+        const numericRating = Number(rating);
 
-    if (!rating) {
-        return res.status(400).json({ message: "Please choose a rating before submitting." });
-    }
+        console.log(`Creating review for item ${itemId} by user ${user.id}`);
 
-    if (!Number.isFinite(numericRating) || numericRating < 1 || numericRating > 5) {
-        return res.status(400).json({ message: "Rating must be between 1 and 5." });
-    }
-
-    if (normalizedCaption.length > 280) {
-        return res.status(400).json({ message: "Comment cannot exceed 280 characters." });
-    }
-
-    const menuItem = await resolveMenuItem({
-        itemId,
-        itemName,
-        restaurantName,
-        description,
-        priceCents: typeof priceCents === "number" ? priceCents : null,
-        createIfMissing: true,
-    });
-
-    if (!menuItem) {
-        return res.status(404).json({ message: "Menu item not found." });
-    }
-
-    const existingReview = await prisma.itemReview.findFirst({
-        where: {
-            menuItemId: menuItem.id,
-            userId: user.id,
+        if (!rating) {
+            return res.status(400).json({ message: "Please choose a rating before submitting." });
         }
-    });
 
-    if (existingReview) {
-        return res.status(400).json({ message: "You have already reviewed this menu item." });
-    }
+        if (!Number.isFinite(numericRating) || numericRating < 1 || numericRating > 5) {
+            return res.status(400).json({ message: "Rating must be between 1 and 5." });
+        }
 
-    const review = await prisma.itemReview.create({
-        data: {
-            menuItemId: menuItem.id,
-            userId: user.id,
-            rating: numericRating,
-            caption: normalizedCaption || null,
-        },
-        include: {
-            user: {
-                select: {
-                    id: true,
-                    displayName: true,
-                    email: true,
+        if (normalizedCaption.length > 280) {
+            return res.status(400).json({ message: "Comment cannot exceed 280 characters." });
+        }
+
+        const menuItem = await resolveMenuItem({
+            itemId,
+            itemName,
+            restaurantName,
+            description,
+            priceCents: typeof priceCents === "number" ? priceCents : null,
+            createIfMissing: true,
+        });
+
+        if (!menuItem) {
+            console.error("MenuItem resolution failed for:", { itemId, itemName, restaurantName });
+            return res.status(404).json({ message: "Menu item not found." });
+        }
+
+        const existingReview = await prisma.itemReview.findFirst({
+            where: {
+                menuItemId: menuItem.id,
+                userId: user.id,
+            }
+        });
+
+        if (existingReview) {
+            return res.status(400).json({ message: "You have already reviewed this menu item." });
+        }
+
+        const review = await prisma.itemReview.create({
+            data: {
+                menuItemId: menuItem.id,
+                userId: user.id,
+                rating: numericRating,
+                caption: normalizedCaption || null,
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        displayName: true,
+                        email: true,
+                    }
                 }
             }
-        }
-    });
+        });
 
-    res.status(201).json({
-        id: review.id,
-        menuItemId: review.menuItemId,
-        userId: review.userId,
-        rating: Number(review.rating),
-        caption: review.caption,
-        createdAt: review.createdAt,
-        user: review.user,
-    });
+        res.status(201).json({
+            id: review.id,
+            menuItemId: review.menuItemId,
+            userId: review.userId,
+            rating: Number(review.rating),
+            caption: review.caption,
+            createdAt: review.createdAt,
+            user: review.user,
+        });
+    } catch (error) {
+        console.error("Critical error creating review:", error);
+        res.status(500).json({ message: "An internal server error occurred while saving your review." });
+    }
 });
 
 export default router;
