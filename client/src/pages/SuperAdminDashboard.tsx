@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { supabase } from '../lib/supabase';
 
 export default function SuperAdminDashboard() {
@@ -39,7 +39,7 @@ export default function SuperAdminDashboard() {
         if (data) setRestaurantMenu(data);
     };
 
-    const handleAddRestaurant = async (e: React.FormEvent) => {
+    const handleAddRestaurant = async (e: FormEvent) => {
         e.preventDefault();
         setIsSaving(true);
         const formData = new FormData(e.currentTarget as HTMLFormElement);
@@ -56,7 +56,7 @@ export default function SuperAdminDashboard() {
         }
     };
 
-    const handleAddMenuItem = async (e: React.FormEvent) => {
+    const handleAddMenuItem = async (e: FormEvent) => {
         e.preventDefault();
         setIsSaving(true);
         const formData = new FormData(e.currentTarget as HTMLFormElement);

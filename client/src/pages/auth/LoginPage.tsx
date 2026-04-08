@@ -1,11 +1,14 @@
-import React from 'react';
+import type { FormEvent } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 
-function LoginPage() {
+// Page for existing users to login to their accounts
+// Can navigate to langing, suggestions, and signup pages
+
+export default function LoginPage() {
     const navigate = useNavigate();
 
-    const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleEmailLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const email = String(formData.get("email") ?? "");
@@ -35,86 +38,90 @@ function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col font-sans antialiased">
-            {/* Navigation */}
-            <nav className="flex items-center justify-between px-8 py-4 bg-white border-b border-slate-200">
-                <Link to="/" className="text-2xl font-bold tracking-tighter text-black hover:opacity-80 transition-opacity">
-                    Meal Share
-                </Link>
-                <div className="space-x-6 text-sm font-medium text-slate-600 flex items-center">
-                    <Link to="/suggestions" className="hover:text-black transition-colors">Suggestions</Link>
-                    <Link to="/signup" className="text-black bg-slate-100 px-4 py-2 rounded-full hover:bg-slate-200 transition-colors">
-                        Sign Up
-                    </Link>
-                </div>
-            </nav>
-
-            {/* Login Card Container */}
-            <div className="flex-grow flex items-center justify-center p-6">
-                <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-10">
-                    
-                    <div className="text-center mb-10">
-                        <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-2">Welcome back</h2>
-                        <p className="text-slate-500 font-medium">Please enter your details to sign in</p>
+        <div className="min-h-[90vh] bg-white font-sans antialiased text-slate-900 flex items-center justify-center px-8">
+            <div className="max-w-md w-full space-y-12">
+                
+                {/* Header Section */}
+                <div className="text-center space-y-4">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-black rounded-2xl shadow-xl shadow-black/20 mb-4 transform -rotate-3 hover:rotate-0 transition-transform duration-500">
+                        <span className="text-white font-black text-3xl">M</span>
                     </div>
+                    <h2 className="text-5xl font-black tracking-tighter text-black">
+                        Welcome <br />
+                        <span className="text-orange-500 italic">Back.</span>
+                    </h2>
+                    <p className="text-slate-500 font-medium">
+                        Log in to see what your community is eating today.
+                    </p>
+                </div>
 
-                    {/* Integrated Form */}
-                    <form className="space-y-5" onSubmit={handleEmailLogin}>
-                        <div>
-                            <label className="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
+                {/* Login Form */}
+                <div className="space-y-6">
+                    <form
+                        className="space-y-4"
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            void handleEmailLogin(e);
+                        }}
+                    >
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Email Address</label>
                             <input 
-                                name="email"
+                                name="email" 
                                 type="email" 
-                                placeholder="rallapbv@mail.uc.edu"
-                                required
-                                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-black/5 focus:border-black transition-all"
+                                placeholder="name@example.com" 
+                                required 
+                                className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-black focus:bg-white rounded-2xl outline-none transition-all font-bold text-lg"
                             />
                         </div>
 
-                        <div>
-                            <label className="block text-sm font-semibold text-slate-700 mb-2">Password</label>
+                        <div className="space-y-1">
+                            <div className="flex justify-between items-center ml-1">
+                                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Password</label>
+                                <Link to="/forgot-password" className="text-[10px] font-black uppercase tracking-widest text-orange-500 hover:text-black transition-colors">Forgot?</Link>
+                            </div>
                             <input 
-                                name="password"
+                                name="password" 
                                 type="password" 
-                                placeholder="••••••••"
-                                required
-                                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-black/5 focus:border-black transition-all"
+                                placeholder="••••••••" 
+                                required 
+                                className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-black focus:bg-white rounded-2xl outline-none transition-all font-bold text-lg"
                             />
                         </div>
 
                         <button 
-                            type="submit"
-                            className="w-full bg-black text-white font-bold py-4 rounded-2xl hover:bg-slate-800 transition-all transform active:scale-[0.98] mt-2"
+                            type="submit" 
+                            className="w-full bg-black text-white px-8 py-5 rounded-2xl text-lg font-extrabold hover:bg-slate-800 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-black/20"
                         >
-                            Login
+                            Sign In
                         </button>
                     </form>
 
-                    <div className="relative my-8">
-                        <div className="absolute inset-0 flex items-center">
-                            <span className="w-full border-t border-slate-100"></span>
-                        </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                            <span className="bg-white px-2 text-slate-400 font-semibold tracking-widest">Or continue with</span>
-                        </div>
+                    {/* Divider */}
+                    <div className="relative flex items-center py-4">
+                        <div className="flex-grow border-t border-slate-100"></div>
+                        <span className="flex-shrink mx-4 text-[10px] font-black uppercase tracking-[0.3em] text-slate-300">Social Account</span>
+                        <div className="flex-grow border-t border-slate-100"></div>
                     </div>
 
-                    {/* Google Login Button */}
+                    {/* OAuth Button */}
                     <button 
                         onClick={() => void handleOAuthLogin("google")}
-                        className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 text-slate-700 font-bold py-4 rounded-2xl hover:bg-slate-50 transition-all active:scale-[0.98]"
+                        className="w-full bg-white border-2 border-slate-100 text-black px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-slate-50 hover:border-slate-200 transition-all active:scale-[0.98]"
                     >
-                        <img src="https://www.svgrepo.com/show/355037/google.svg" className="w-5 h-5" alt="Google" />
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-5 h-5" alt="Google" />
                         Continue with Google
                     </button>
-
-                    <p className="text-center text-slate-500 mt-8 font-medium">
-                        No account? <Link to="/signup" className="text-black font-bold hover:underline">Sign up</Link>
-                    </p>
                 </div>
+
+                {/* Footer Link */}
+                <p className="text-center text-slate-400 font-bold text-sm">
+                    New here?{' '}
+                    <Link to="/signup" className="text-black hover:text-orange-500 transition-colors border-b-2 border-orange-500/20 hover:border-orange-500">
+                        Create an account
+                    </Link>
+                </p>
             </div>
         </div>
     );
 }
-
-export default LoginPage;

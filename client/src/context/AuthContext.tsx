@@ -1,5 +1,4 @@
-import React from "react";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { supabase } from "../lib/supabase";
 
 export type AppRole = "CUSTOMER" | "OWNER" | "ADMIN";
@@ -22,7 +21,7 @@ const AuthContext = createContext<AuthContextValue>({
   signOut: async () => {}
 });
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser>(null);
   const [loading, setLoading] = useState(true);
 
