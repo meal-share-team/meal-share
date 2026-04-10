@@ -155,7 +155,7 @@ export default function OwnerDashboardPage() {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan={4} className="px-8 py-10 text-center font-bold text-slate-300">No reviews yet.</td>
+                                        <td colSpan={4} className="px-8 py-10 text-center font-bold text-slate-300">No reviews yet</td>
                                     </tr>
                                 )}
                             </tbody>

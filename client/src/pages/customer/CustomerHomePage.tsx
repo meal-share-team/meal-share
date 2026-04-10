@@ -295,9 +295,9 @@ export default function CustomerHomePage() {
 
                         return (
                             <div key={meal.id} className="bg-white rounded-[2.5rem] border border-slate-100 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 group flex flex-col relative border-b-4 border-b-slate-50 hover:border-b-orange-500">
-                                <div className="relative h-48 bg-slate-50 flex items-center justify-center overflow-hidden">
+                                {/* <div className="relative h-48 bg-slate-50 flex items-center justify-center overflow-hidden">
                                     <span className="text-5xl transform group-hover:scale-125 transition-transform duration-700">🍽️</span>
-                                </div>
+                                </div> */}
                                 <button
                                     onClick={(event) => {
                                         event.stopPropagation();
@@ -342,7 +342,7 @@ export default function CustomerHomePage() {
                                                 </>
                                             ) : (
                                                 <p className="text-sm text-slate-400 font-bold">
-                                                    Be the first to rate this dish.
+                                                    Be the first to rate this dish
                                                 </p>
                                             )}
                                         </div>
@@ -388,13 +388,13 @@ export default function CustomerHomePage() {
                         }}
                         className={`w-full flex items-center gap-4 px-6 py-5 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl transition-all ${view === 'discover' ? 'bg-black text-white shadow-xl shadow-black/20 scale-[1.02]' : 'text-slate-400 hover:bg-slate-50 hover:text-black'}`}
                     >
-                        📍 Discover
+                        Discover
                     </button>
                     <button
                         onClick={() => setView('saved')}
                         className={`w-full flex items-center gap-4 px-6 py-5 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl transition-all ${view === 'saved' ? 'bg-black text-white shadow-xl shadow-black/20 scale-[1.02]' : 'text-slate-400 hover:bg-slate-50 hover:text-black'}`}
                     >
-                        🧡 Saved ({savedMeals.length})
+                        Saved ({savedMeals.length})
                     </button>
                 </nav>
 
@@ -481,7 +481,7 @@ export default function CustomerHomePage() {
                         <div className="mt-8 space-y-12">
                             {locationError && (
                                 <div className="bg-orange-500 text-white px-8 py-6 rounded-[2rem] font-black text-sm uppercase tracking-widest flex items-center gap-4 shadow-xl shadow-orange-500/20">
-                                    <span>⚠️</span> {locationError}
+                                    {locationError}
                                 </div>
                             )}
 
@@ -494,7 +494,7 @@ export default function CustomerHomePage() {
                                     >
                                         <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-bl-[5rem] -mr-16 -mt-16 group-hover:bg-orange-500 transition-colors duration-500"></div>
                                         <div className="relative z-10">
-                                            <div className="w-16 h-16 bg-black text-white rounded-2xl flex items-center justify-center text-3xl mb-8 group-hover:rotate-12 transition-transform">🍽️</div>
+                                            {/* <div className="w-16 h-16 bg-black text-white rounded-2xl flex items-center justify-center text-3xl mb-8 group-hover:rotate-12 transition-transform">🍽️</div> */}
                                             <h3 className="font-black text-3xl mb-2 text-black tracking-tighter leading-none uppercase">{restaurant.name}</h3>
                                             <p className="text-slate-400 font-black uppercase text-[10px] tracking-[0.2em]">{restaurant.neighborhood}</p>
                                         </div>
@@ -505,7 +505,7 @@ export default function CustomerHomePage() {
                                     onClick={() => setIsSpotModalOpen(true)}
                                     className="bg-white p-10 rounded-[3rem] border-2 border-dashed border-slate-200 shadow-sm hover:border-orange-500 transition-all duration-300 cursor-pointer group flex flex-col items-center justify-center text-center min-h-[250px]"
                                 >
-                                    <div className="w-16 h-16 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center text-2xl mb-4 group-hover:bg-orange-50 group-hover:text-orange-500 transition-all">💡</div>
+                                    {/* <div className="w-16 h-16 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center text-2xl mb-4 group-hover:bg-orange-50 group-hover:text-orange-500 transition-all">💡</div> */}
                                     <h3 className="font-black text-lg mb-1 text-slate-400 group-hover:text-black uppercase tracking-tight">Missing a Spot?</h3>
                                     <p className="text-slate-300 font-bold text-xs uppercase tracking-widest group-hover:text-slate-400">Suggest it here</p>
                                 </div>
@@ -530,7 +530,7 @@ export default function CustomerHomePage() {
                                     onClick={() => setIsDishModalOpen(true)}
                                     className="px-8 py-4 bg-white border-2 border-dashed border-slate-200 text-slate-900 font-black text-xs uppercase tracking-widest rounded-2xl hover:border-orange-500 hover:text-orange-500 transition-all hover:scale-[1.02]"
                                 >
-                                    ➕ Suggest a Menu Item
+                                    Suggest a Menu Item
                                 </button>
                             </div>
                         </div>

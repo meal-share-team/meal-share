@@ -21,8 +21,8 @@ export default function LandingPage() {
 
                     <div className="space-y-4">
                         <h2 className="text-6xl lg:text-8xl font-black tracking-tighter leading-[0.85] text-black">
-                            Don't just eat. <br />
-                            <span className="text-orange-500 italic">Share it.</span>
+                            Don't just eat <br />
+                            <span className="text-orange-500 italic">Share it</span>
                         </h2>
                         <p className="text-xl text-slate-500 leading-relaxed max-w-lg font-medium">
                             Join a community of food lovers. Discover hidden gems, rate individual dishes, and help others find their next favorite meal.
@@ -97,7 +97,7 @@ export default function LandingPage() {
         {/* Footer / Trust Section */}
         <footer className="bg-slate-50 py-16 border-t border-slate-100">
             <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-8">
-                <p className="text-slate-400 font-bold text-sm">© 2026 Meal Share. Built for foodies.</p>
+                <p className="text-slate-400 font-bold text-sm">© 2026 Meal Share</p>
                 <div className="flex gap-8">
                     <Link to="/about" className="text-slate-400 hover:text-black font-bold text-sm transition-colors">About</Link>
                     <Link to="/privacy" className="text-slate-400 hover:text-black font-bold text-sm transition-colors">Privacy</Link>
