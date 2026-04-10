@@ -398,12 +398,12 @@ export default function CustomerHomePage() {
                     </button>
                 </nav>
 
-                <button
+                {/* <button
                     onClick={handleSignOut}
                     className="w-full flex items-center justify-center gap-2 px-6 py-4 text-slate-400 font-black text-[10px] uppercase tracking-widest hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all mt-auto border border-transparent hover:border-red-100"
                 >
                     Sign Out
-                </button>
+                </button> */}
             </aside>
 
             <main className="flex-1 overflow-y-auto overflow-x-hidden p-8 lg:p-16">
